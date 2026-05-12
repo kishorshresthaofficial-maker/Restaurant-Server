@@ -31,3 +31,41 @@ export const getAllCategory = async(req,res) => {
     console.log(error)
   }
 }
+
+export const getCategoryById = async(req, res) => {
+  try{
+    const categoryItems = await Category.findById(req.params.id)
+    res.json(categoryItems)
+  }
+  catch(error)
+  {
+    console.log(error)
+  }   
+}
+
+
+export const deleteCategory = async (req, res) => {
+  try {
+    const delCategory = await Category.findByIdAndDelete(req.params.id);
+
+    if (!delCategory) {
+      return res.status(404).json({ message: "Category item not found" });
+    }
+
+    res.json({ message: "Deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to delete." });
+  }
+};
+
+export const updateCategory = async (req, res) => {
+  try {
+    const updatedCategory = await Category.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    res.status(200).json(updatedCategory);
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to update category." });
+  }
+}

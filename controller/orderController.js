@@ -1,3 +1,5 @@
+
+import Order from '../model/orders.js'
 import Orders from '../model/orders.js'
 import router from "../routes/authRoutes.js"
 
@@ -22,3 +24,18 @@ export const getOrders = async(req, res)=> {
         console.log(error)
     }
 }
+
+export const deleteOrder = async (req, res) => {
+  try {
+    const delOrder = await Order.findByIdAndDelete(req.params.id);
+
+    if (!delOrder) {
+      return res.status(404).json({ message: "Order item not found" });
+    }
+
+    res.json({ message: "Deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to delete." });
+  }
+};
